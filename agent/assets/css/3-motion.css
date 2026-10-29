@@ -1,0 +1,44 @@
+/* 3-motion.css ｜ 揭示 / 逐字入场、共享关键帧、reduced-motion 与 ?shot=1 静态模式降级；依赖 1-base */
+/* 揭示：IO 加 .in，动画本体在这里 */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s var(--ease),transform .95s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal:nth-child(2){transition-delay:.06s}
+
+/* 首屏姓名逐字 */
+.hero__name{display:inline-block;overflow:hidden;padding-bottom:.1em;vertical-align:bottom}
+.split-char{display:inline-block;opacity:0;transform:translateY(115%) rotate(6deg);transition:transform .9s var(--ease),opacity .6s linear;transition-delay:calc(var(--d,0) * 1s)}
+.is-ready .split-char{opacity:1;transform:none}
+/* 首屏其余元素在遮罩退场后才入场 */
+.hero .reveal{transition-delay:0s}
+.is-ready .hero .reveal.in{transition-delay:.1s}
+
+/* 共享关键帧 */
+@keyframes drift1{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(6vw,4vw,0) scale(1.16)}}
+@keyframes drift2{from{transform:translate3d(0,0,0) scale(1.05)}to{transform:translate3d(-7vw,5vw,0) scale(.92)}}
+@keyframes drift3{from{transform:translate3d(0,0,0) scale(.96)}to{transform:translate3d(4vw,-6vw,0) scale(1.12)}}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}40%{transform:translate(1%,-2%)}60%{transform:translate(-1%,-1%)}80%{transform:translate(2%,2%)}100%{transform:translate(0,0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,44%{opacity:1}50%,94%{opacity:0}100%{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes dash{to{stroke-dashoffset:-760}}
+@keyframes ledwait{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--warn) 55%,transparent);opacity:1}50%{box-shadow:0 0 0 6px transparent;opacity:.55}}
+@keyframes arrowin{from{opacity:0;transform:translate(-6px,6px)}to{opacity:1;transform:none}}
+@keyframes caret{0%,100%{opacity:1}50%{opacity:0}}
+
+/* reduced-motion：一律降级到终态，不做位移与循环 */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .reveal{opacity:1 !important;transform:none !important}
+  .split-char{opacity:1 !important;transform:none !important}
+  .cursor,.bg__canvas{display:none !important}
+  .caret{animation:none !important;opacity:1}
+  html.has-cursor,html.has-cursor a,html.has-cursor button{cursor:auto}
+}
+
+/* ?shot=1 静态模式：截图与打印用，所有入场动画直接终态 */
+html.is-static .loader,html.is-static .cursor,html.is-static .progress{display:none !important}
+html.is-static *,html.is-static *::before,html.is-static *::after{animation:none !important;transition:none !important}
+html.is-static .reveal{opacity:1 !important;transform:none !important}
+html.is-static .split-char{opacity:1 !important;transform:none !important}
+html.is-static .hero{min-height:auto !important;padding-top:calc(var(--nav-h) + 3rem)}
+html.is-static .bg__noise{display:none}
