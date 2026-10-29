@@ -1,0 +1,69 @@
+/* 6-works.css ｜ 作品卡（3D 倾斜 + 光斑）、右侧网格底与内联 SVG 架构图、指标数字；依赖 1-base / 3-motion */
+.works{display:grid;gap:clamp(1.6rem,4vw,3rem)}
+.work{
+  position:relative;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:clamp(1.2rem,3.2vw,2.6rem);align-items:center;
+  border:1px solid var(--line);border-radius:calc(var(--radius) + 8px);
+  padding:clamp(1.1rem,2.8vw,2rem);
+  background:linear-gradient(155deg,var(--panel-2),transparent 62%);
+  transform-style:preserve-3d;will-change:transform;
+  transition:border-color .5s var(--ease),box-shadow .5s var(--ease);
+}
+.work::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .45s;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--brand) 14%,transparent),transparent 42%);
+}
+.work:hover{border-color:var(--line-2);box-shadow:var(--shadow)}
+.work:hover::after{opacity:1}
+.work:nth-child(even){grid-template-columns:minmax(0,.96fr) minmax(0,1.04fr)}
+.work:nth-child(even) .work__info{order:2}
+.work:nth-child(even) .work__art{order:1}
+.work__info{min-width:0;transform:translateZ(34px)}
+.work__top{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.95rem}
+.work__badge{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--brand);text-transform:uppercase}
+.work__name{font-size:clamp(1.6rem,3.4vw,2.35rem);letter-spacing:-.03em;line-height:1.1;font-weight:700}
+.work__sub{font-size:.92rem;color:var(--txt-3);margin:.25rem 0 .7rem}
+.work__one{color:var(--txt-2);max-width:46ch;margin-bottom:1rem}
+.work__meta{display:flex;gap:1.4rem;flex-wrap:wrap;font-size:.78rem;color:var(--txt-3);margin-bottom:.9rem}
+.work__meta b{display:block;font-size:.68rem;letter-spacing:.08em;color:var(--txt-3);font-weight:400;margin-bottom:.14rem}
+.work__meta span{color:var(--txt-2)}
+.work__tags{display:flex;flex-wrap:wrap;gap:.34rem;margin-bottom:1.1rem}
+.work__kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem 1rem;border-top:1px solid var(--line);padding-top:1rem;margin-bottom:1.2rem}
+.kpi{min-width:0}
+.kpi__v{display:flex;align-items:baseline;gap:.2rem;line-height:1}
+.kpi__v b{font-family:var(--mono);font-size:clamp(1.3rem,2.5vw,1.7rem);font-weight:600;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi__v i{font-style:normal;font-family:var(--mono);font-size:.68rem;color:var(--txt-3)}
+.kpi__l{display:block;font-size:.76rem;color:var(--txt-2);margin-top:.3rem}
+.kpi__note{display:block;font-size:.68rem;line-height:1.55;color:var(--txt-3);margin-top:.16rem}
+.work__cta{align-self:flex-start}
+
+/* 右侧示意图 */
+.work__art{
+  position:relative;border-radius:var(--radius);border:1px solid var(--line);overflow:hidden;
+  background:color-mix(in srgb,var(--bg-2) 72%,transparent);
+  padding:clamp(.7rem,1.8vw,1.1rem);min-height:clamp(240px,30vw,320px);
+  display:flex;flex-direction:column;justify-content:center;gap:.6rem;transform:translateZ(18px);
+}
+.work__grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px;opacity:.55;
+  -webkit-mask-image:radial-gradient(circle at 50% 42%,#000,transparent 76%);
+  mask-image:radial-gradient(circle at 50% 42%,#000,transparent 76%);
+}
+.diagram{position:relative;width:100%;height:auto;overflow:visible}
+.diagram text{font-family:var(--mono);fill:var(--txt-2);font-size:9.5px}
+.diagram .d-b{fill:var(--panel-2);stroke:var(--line-2);stroke-width:1}
+.diagram .d-b--hl{fill:color-mix(in srgb,var(--brand) 14%,transparent);stroke:var(--brand);stroke-width:1.2}
+.diagram .d-b--warn{fill:color-mix(in srgb,var(--warn) 12%,transparent);stroke:color-mix(in srgb,var(--warn) 62%,transparent)}
+.diagram .d-t{fill:var(--txt);font-size:11px;font-weight:600}
+.diagram .d-s{fill:var(--txt-3);font-size:8.5px}
+.diagram .d-line{stroke:var(--line-2);stroke-width:1.1;fill:none}
+.diagram .d-flow{stroke:var(--brand);stroke-width:1.4;fill:none;stroke-dasharray:6 8;animation:dash 3.4s linear infinite}
+.diagram .d-dash{stroke:color-mix(in srgb,var(--warn) 70%,transparent);stroke-width:1.1;stroke-dasharray:4 4;fill:none}
+.diagram .d-spark{stroke:var(--brand);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-dasharray:160 600;animation:dash 5.5s linear infinite;opacity:.9}
+.work__note{position:relative;font-family:var(--mono);font-size:.68rem;color:var(--txt-3);letter-spacing:.02em;text-align:center;overflow-wrap:anywhere}
+.works__rel{
+  margin-top:clamp(1.6rem,3vw,2.4rem);padding:1rem 1.2rem;border-left:2px solid var(--brand);
+  color:var(--txt-2);font-size:.9rem;background:linear-gradient(90deg,var(--panel),transparent);border-radius:0 12px 12px 0;
+}
